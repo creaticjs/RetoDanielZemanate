@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+		integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+	<div class="container" id="app">
+		<div>
+			<h3 class="text-center">FACTURA ELECTRONICA VENTA DE CELULARES</h3>
+			<img id ="img" src="https://st3.depositphotos.com/6935094/12490/v/950/depositphotos_124905820-stock-illustration-phone-shop-logo.jpg" 
+			alt="Smiley face" width="250" height="200" aling = "center">
+		</div>
+		<div id="titulo" class="form-group">
+			<strong  class="control-label">LISTA DE CELULARES DISPONIBLES:</strong>
+			<select id="select" class="form-control form-control-lg" v-model="factura.celularSeleccionado.celular"
+				@change="infoProductoSeleccionado">
+				<option value=""> PHONE</option>
+				<option v-for="celular in celulares" :value="celular.celular">
+					{{ celular.nombre }}
+				</option>
+			</select>
+		</div>
+
+		<div id="phone" class="panel panel-default">
+			<div class="panel-heading">
+				<h3 id="tituloinfo" class="panel-title"> PHONE INFORMATION</h3>
+			</div>
+
+			<div class="panel-body">
+
+				<br>
+				<p>
+					<strong>IMEI: </strong> {{ factura.celularSeleccionado.celular || '' }}
+				</p>
+				<p>
+					<strong>MARCA Y MODELO: </strong> {{ factura.celularSeleccionado.nombre || '' }}
+				</p>
+				<p>
+					<strong>PRECIO: </strong> {{ factura.celularSeleccionado.precio || '' }}
+				</p>
+
+
+			</div>
+
+			<div class="panel-footer">
+				<div class="row">
+					<div class="col-sm-3">
+						<label id="tituloinfo" class="control-label">Seleccione la cantidad:</label>
+					</div>
+					<div class="col-sm-6">
+						<input id="cantidad" type="number" min="0" v-model="factura.celularSeleccionado.cantidad"
+							class="form-control col-sm-6 input-sm" required>
+					</div>
+					<div class="col-sm-2 text-right">
+						<button class="btn btn-success" @click="agregarALista">ADQUIRIR</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="table-responsive">
+			<table id="tabla" class="table table-bordered">
+				<thead>
+					<tr>
+						<th>IMEI</th>
+						<th>PHONE</th>
+						<th>Precio</th>
+						<th>Cantidad</th>
+						<th>Precio Total</th>
+
+
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr v-for="(lista, indice) in factura.celularesAgregados">
+						<td>{{ lista.celular }}</td>
+						<td>{{ lista.nombre }}</td>
+						<td>{{ lista.precio }}</td>
+						<td width="100">
+							<input type="number" min="1" class="form-control input-sm" v-model="lista.cantidad">
+						</td>
+						<td>{{lista.cantidad * lista.precio }}</td>
+
+					</tr>
+				</tbody>
+
+				<tfoot>
+					<tr>
+						<td colspan="5" class="text-left">
+							<strong>SUBTOTAL:</strong>
+							<strong>{{ total}}</strong>
+						</td>
+
+
+					</tr>
+					<tr>
+						<td colspan="5" class="text-left">
+							<strong>TOTAL(+TAX):</strong>
+							<strong>{{ total | calcularIva}}</strong>
+						</td>
+
+
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+
+
+
+	</div>
+	<script src="https://unpkg.com/vue@2.4.2"></script>
+	<script src="js/index.js"></script>
+</body>
+
+</html>
